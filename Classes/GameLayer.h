@@ -5,6 +5,7 @@
 #include "BulletManage.h"
 #include "WarriorLayer.h"
 #include "EnemyLayer.h"
+#include "ScoreLayer.h"
 USING_NS_CC;
 class GameLayer : public BasicLayer
 {
@@ -24,6 +25,7 @@ public:
 private:
 	WarriorLayer* mWarrior;
 	BulletManage* bullet;
+	ScoreLayer * scoreLayer;
 	int times;
 };
 

@@ -1,5 +1,4 @@
 #include "GameLayer.h"
-#include "ScoreLayer.h"
 #include "PauseLayer.h"
 #include "Effects.h"
 #include "Enemy.h"
@@ -38,7 +37,7 @@ void  GameLayer::setupViews()
 	//背景滚动
 	this->schedule(schedule_selector(GameLayer::background_scroll_logic),0.01f);
 	//创建分数层
-	ScoreLayer* scoreLayer=ScoreLayer::create();
+	this->scoreLayer=ScoreLayer::create();
 	scoreLayer->setAnchorPoint(ccp(0,1));
 	scoreLayer->setPosition(ccp(10,getWinSize().height-20));
 	this->addChild(scoreLayer);
@@ -84,7 +83,7 @@ void GameLayer::update(float delta)
 		if(enemy->boundingBox().intersectsRect(this->mWarrior->m_warrrior->boundingBox())) 
 		{
 			//CCLOG("a");
-			Effects::sharedEffects()->boom( this, this->mWarrior->m_warrrior->getPosition() );
+			Effects::sharedEffects()->hero_boom( this, this->mWarrior->m_warrrior->getPosition() );			
 			return;
 		}
 	}
@@ -124,23 +123,26 @@ void GameLayer::update(float delta)
 	{
 		//CCSprite* enemy3 = (CCSprite*)et;
 		Enemy* enemy3=(Enemy*)et;
-		Effects::sharedEffects()->boom( this, enemy3->getPosition() );
-		if(CCRANDOM_0_1()<1)
-		{
-			CCSprite* sp=CCSprite::create("Icon-Small.png");
-			sp->setPosition(enemy3->getPosition());
-			this->addChild(sp);
-			int time=enemy3->getPosition().y/100;
-			CCMoveTo* move=CCMoveTo::create(time,ccp(enemy3->getPosition().x,0));
+		Effects::sharedEffects()->enemy_boom( this, enemy3->getPosition() );
+		//爆奖励
+		//if(CCRANDOM_0_1()<1)
+		//{
+		//	CCSprite* sp=CCSprite::create("Icon-Small.png");
+		//	sp->setPosition(enemy3->getPosition());
+		//	this->addChild(sp);
+		//	int time=enemy3->getPosition().y/100;
+		//	CCMoveTo* move=CCMoveTo::create(time,ccp(enemy3->getPosition().x,0));
 
-			CCActionInterval* rotate=CCRotateTo::create(1, 0.0f,180.0f);
-			CCActionInterval* rotateBack=CCRotateTo::create(1, 0.0f,360.0f);
-			//CCActionInstant* func =CCCallFuncN::create(this,callfuncN_selector(EnemyLayer::finishMoveCallback));
-			//sp->runAction(CCSequence::create(move,NULL));
-			CCRepeatForever* rf=CCRepeatForever::create(CCSequence::create(rotate,rotateBack,NULL));
-			sp->runAction(rf);
-			sp->runAction(move);
-		}
+		//	CCActionInterval* rotate=CCRotateTo::create(1, 0.0f,180.0f);
+		//	CCActionInterval* rotateBack=CCRotateTo::create(1, 0.0f,360.0f);
+		//	//CCActionInstant* func =CCCallFuncN::create(this,callfuncN_selector(EnemyLayer::finishMoveCallback));
+		//	//sp->runAction(CCSequence::create(move,NULL));
+		//	CCRepeatForever* rf=CCRepeatForever::create(CCSequence::create(rotate,rotateBack,NULL));
+		//	sp->runAction(rf);
+		//	sp->runAction(move);
+		//}
+		//添加积分
+		this->scoreLayer->updateScore(enemy3->getScore());
 		if(this->enemy->enemysArray->containsObject(enemy3))//防止已经删除了
 			this->enemy->enemysArray->removeObject(enemy3);
 		if(this->enemy->mEnemyBatchNode->getChildren()->containsObject(enemy3))

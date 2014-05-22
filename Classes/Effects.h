@@ -24,11 +24,12 @@ public:
     //   预加载动画到CCAnimationCache中
     void preLoad();
     
-    void boom( CCNode* target, CCPoint point );
+    void enemy_boom( CCNode* target, CCPoint point );
+	void hero_boom( CCNode* target, CCPoint point );
 	void hit( CCNode* target, CCPoint point );
     
     void boom_callback( CCNode* pNode );
-    
+    void hit_callback( CCNode* pNode );
 
 };
 #endif //__EFFECTS_H__

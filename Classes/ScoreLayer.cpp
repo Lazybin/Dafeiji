@@ -3,6 +3,7 @@
 USING_NS_CC;
 ScoreLayer::ScoreLayer()
 {
+	this->m_score=0;
 }
 ScoreLayer::~ScoreLayer(){}
 //初始化方法
@@ -22,7 +23,8 @@ bool ScoreLayer::init()
 //对控件以及布景进行初始化
 void  ScoreLayer::setupViews()
 {
-	CCLabelBMFont* scoreFont=CCLabelBMFont::create("Score:20","arial-14.fnt");
+	this->scoreFont=CCLabelBMFont::create("Score:0","arial-14.fnt");
+	
 	scoreFont->setAnchorPoint(CCPointZero);
 	scoreFont->setPosition(CCPointZero);
 	scoreFont->setScale(1.5f);
@@ -44,5 +46,12 @@ CCScene* ScoreLayer::scene()
 	}
 	while(0);
 	return sc;
+}
+void ScoreLayer::updateScore(int score)
+{
+	this->m_score+=score;
+	char strScore[100];
+	sprintf(strScore,"Score:%d",this->m_score);
+	this->scoreFont->setString(strScore,TRUE);
 }
  

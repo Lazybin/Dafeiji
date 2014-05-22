@@ -1,5 +1,5 @@
 #include "Effects.h"
-
+#include "GameOverLayer.h"
 static Effects* instance = NULL;
 
 Effects* Effects::sharedEffects(){
@@ -75,7 +75,7 @@ void Effects::hit( CCNode* target, CCPoint point ){
     CCAnimate* anim = CCAnimate::create( boomAnimation );
     
     //  2.写一个CCSequence 包含回调
-    CCCallFuncN* callback = CCCallFuncN::create(sp, callfuncN_selector( Effects::boom_callback));
+    CCCallFuncN* callback = CCCallFuncN::create(sp, callfuncN_selector( Effects::hit_callback));
     
     CCAction* actions = CCSequence::create( anim,callback,NULL );
     
@@ -86,7 +86,27 @@ void Effects::hit( CCNode* target, CCPoint point ){
 }
 
 //  爆炸的效果
-void Effects::boom( CCNode* target, CCPoint point ){
+void Effects::enemy_boom( CCNode* target, CCPoint point ){
+    
+    CCSprite* sp = CCSprite::createWithSpriteFrameName( "explosion_01.png" );
+    
+    target->addChild( sp,10 );
+    sp->setPosition( point );
+    
+    //  1.从CCanimationcache 中读取爆炸的animation
+    CCAnimation* boomAnimation = CCAnimationCache::sharedAnimationCache()->animationByName( "boom" );
+    
+    CCAnimate* anim = CCAnimate::create( boomAnimation );
+    
+    //  2.写一个CCSequence 包含回调
+    CCCallFuncN* callback = CCCallFuncN::create(sp, callfuncN_selector( Effects::hit_callback));
+    
+    CCAction* actions = CCSequence::create( anim,callback,NULL );
+    
+    sp->runAction( actions );
+}
+//  爆炸的效果
+void Effects::hero_boom( CCNode* target, CCPoint point ){
     
     CCSprite* sp = CCSprite::createWithSpriteFrameName( "explosion_01.png" );
     
@@ -108,8 +128,13 @@ void Effects::boom( CCNode* target, CCPoint point ){
     
     
 }
+void Effects::hit_callback( CCNode* pNode ){
+
+    pNode->removeFromParentAndCleanup( true );
+}
 
 void Effects::boom_callback( CCNode* pNode ){
 
     pNode->removeFromParentAndCleanup( true );
+	CCDirector::sharedDirector()->pushScene(CCTransitionFade::create(0.5f,GameOverLayer::scene()));
 }
