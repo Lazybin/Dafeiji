@@ -6,6 +6,7 @@
 #include "WarriorLayer.h"
 #include "EnemyLayer.h"
 #include "ScoreLayer.h"
+#include "DoubleLayer.h"
 USING_NS_CC;
 class GameLayer : public BasicLayer
 {
@@ -26,6 +27,7 @@ private:
 	WarriorLayer* mWarrior;
 	BulletManage* bullet;
 	ScoreLayer * scoreLayer;
+	DoubleLayer* mDoubleLayer;
 	int times;
 };
 

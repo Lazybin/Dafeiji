@@ -64,8 +64,13 @@ void  GameLayer::setupViews()
 	this->schedule(schedule_selector(GameLayer::add_new_bullet),0.3f);
 	Effects::sharedEffects()->preLoad();
 	this->scheduleUpdate();
+	//敌机层
 	enemy=EnemyLayer::create();
 	this->addChild(enemy);
+	//双倍层
+	mDoubleLayer=DoubleLayer::create();
+	this->addChild(mDoubleLayer);
+
 }
 void GameLayer::update(float delta)
 {
@@ -75,7 +80,7 @@ void GameLayer::update(float delta)
 	CCArray* enemyToDelete = CCArray::create();//创建一个CCArray，用以存放待删除的敌机，也就是此子弹击中的敌机
 	enemyToDelete->retain();//调用retain
 
-		//检测敌机和hero是否相撞
+	//检测敌机和hero是否相撞
 	CCARRAY_FOREACH(this->enemy->enemysArray,et)//遍历所有敌机
 	{
 		//CCSprite* enemy=(CCSprite*)et;
@@ -87,7 +92,18 @@ void GameLayer::update(float delta)
 			return;
 		}
 	}
-
+	//检测双倍与hero碰撞
+	CCARRAY_FOREACH(this->mDoubleLayer->doubleArray,et)//遍历所有双倍
+	{
+		//CCSprite* enemy=(CCSprite*)et;
+		CCSprite* sp=(CCSprite*)et;	
+		if(sp->boundingBox().intersectsRect(this->mWarrior->m_warrrior->boundingBox())) 
+		{
+			CCLOG("a");
+			//Effects::sharedEffects()->hero_boom( this, this->mWarrior->m_warrrior->getPosition() );			
+			return;
+		}
+	}
 	//检测敌机和子弹是否相撞
 	CCARRAY_FOREACH(this->bullet->bulletsArray,bt)//遍历所有子弹    
 	{    
@@ -125,22 +141,26 @@ void GameLayer::update(float delta)
 		Enemy* enemy3=(Enemy*)et;
 		Effects::sharedEffects()->enemy_boom( this, enemy3->getPosition() );
 		//爆奖励
-		//if(CCRANDOM_0_1()<1)
-		//{
-		//	CCSprite* sp=CCSprite::create("Icon-Small.png");
-		//	sp->setPosition(enemy3->getPosition());
-		//	this->addChild(sp);
-		//	int time=enemy3->getPosition().y/100;
-		//	CCMoveTo* move=CCMoveTo::create(time,ccp(enemy3->getPosition().x,0));
+		if(CCRANDOM_0_1()<1)
+		{
+			//DoubleSprite* dsp=DoubleSprite::create("Icon-Small.png");
+			mDoubleLayer->addDouble(enemy3->getPosition());
+			//CCSprite* sp=CCSprite::create("Icon-Small.png");
+			//sp->setPosition(enemy3->getPosition());
+			//this->addChild(sp);
 
-		//	CCActionInterval* rotate=CCRotateTo::create(1, 0.0f,180.0f);
-		//	CCActionInterval* rotateBack=CCRotateTo::create(1, 0.0f,360.0f);
-		//	//CCActionInstant* func =CCCallFuncN::create(this,callfuncN_selector(EnemyLayer::finishMoveCallback));
-		//	//sp->runAction(CCSequence::create(move,NULL));
-		//	CCRepeatForever* rf=CCRepeatForever::create(CCSequence::create(rotate,rotateBack,NULL));
-		//	sp->runAction(rf);
-		//	sp->runAction(move);
-		//}
+			
+			//int time=enemy3->getPosition().y/100;
+			//CCMoveTo* move=CCMoveTo::create(time,ccp(enemy3->getPosition().x,0));
+
+			//CCActionInterval* rotate=CCRotateTo::create(1, 0.0f,180.0f);
+			//CCActionInterval* rotateBack=CCRotateTo::create(1, 0.0f,360.0f);
+			////CCActionInstant* func =CCCallFuncN::create(this,callfuncN_selector(EnemyLayer::finishMoveCallback));
+			////sp->runAction(CCSequence::create(move,NULL));
+			//CCRepeatForever* rf=CCRepeatForever::create(CCSequence::create(rotate,rotateBack,NULL));
+			//sp->runAction(rf);
+			//sp->runAction(move);
+		}
 		//添加积分
 		this->scoreLayer->updateScore(enemy3->getScore());
 		if(this->enemy->enemysArray->containsObject(enemy3))//防止已经删除了

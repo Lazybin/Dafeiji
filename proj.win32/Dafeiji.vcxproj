@@ -135,6 +135,7 @@ xcopy /Y /Q "$(ProjectDir)..\..\..\external\libwebsockets\win32\lib\*.*" "$(OutD
     <ClCompile Include="..\Classes\BasicLayer.cpp" />
     <ClCompile Include="..\Classes\BulletManage.cpp" />
     <ClCompile Include="..\Classes\DLog.cpp" />
+    <ClCompile Include="..\Classes\DoubleLayer.cpp" />
     <ClCompile Include="..\Classes\Effects.cpp" />
     <ClCompile Include="..\Classes\Enemy.cpp" />
     <ClCompile Include="..\Classes\EnemyLayer.cpp" />
@@ -153,6 +154,7 @@ xcopy /Y /Q "$(ProjectDir)..\..\..\external\libwebsockets\win32\lib\*.*" "$(OutD
     <ClInclude Include="..\Classes\BasicLayer.h" />
     <ClInclude Include="..\Classes\BulletManage.h" />
     <ClInclude Include="..\Classes\DLog.h" />
+    <ClInclude Include="..\Classes\DoubleLayer.h" />
     <ClInclude Include="..\Classes\Effects.h" />
     <ClInclude Include="..\Classes\Enemy.h" />
     <ClInclude Include="..\Classes\EnemyLayer.h" />
