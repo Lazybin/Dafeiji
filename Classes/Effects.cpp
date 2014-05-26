@@ -106,7 +106,7 @@ void Effects::enemy_boom( CCNode* target, CCPoint point ){
     sp->runAction( actions );
 }
 //  爆炸的效果
-void Effects::hero_boom( CCNode* target, CCPoint point ){
+void Effects::hero_boom( CCNode* target, CCPoint point ,int score){
     
     CCSprite* sp = CCSprite::createWithSpriteFrameName( "explosion_01.png" );
     
@@ -119,8 +119,10 @@ void Effects::hero_boom( CCNode* target, CCPoint point ){
     CCAnimate* anim = CCAnimate::create( boomAnimation );
     
     //  2.写一个CCSequence 包含回调
-    CCCallFuncN* callback = CCCallFuncN::create(sp, callfuncN_selector( Effects::boom_callback));
-    
+    //CCCallFuncN* callback = CCCallFuncN::create(sp, callfuncN_selector( Effects::boom_callback));
+
+    CCCallFuncN* callback = CCCallFuncND::create(sp, callfuncND_selector( Effects::boom_callback),(void *)score);
+
     CCAction* actions = CCSequence::create( anim,callback,NULL );
     
     sp->runAction( actions );
@@ -133,8 +135,8 @@ void Effects::hit_callback( CCNode* pNode ){
     pNode->removeFromParentAndCleanup( true );
 }
 
-void Effects::boom_callback( CCNode* pNode ){
+void Effects::boom_callback( CCNode* pNode,int score ){
 
-    pNode->removeFromParentAndCleanup( true );
-	CCDirector::sharedDirector()->pushScene(CCTransitionFade::create(0.5f,GameOverLayer::scene()));
+	
+	CCDirector::sharedDirector()->pushScene(CCTransitionFade::create(0.5f,GameOverLayer::scene(score)));
 }

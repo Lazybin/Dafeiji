@@ -10,11 +10,14 @@ public:
 	~GameOverLayer();
     
     virtual bool init();
-	static CCScene* scene();   
+	static CCScene* scene(int score);   
     void setupViews();
 	void back_callback(CCObject *pSender);
 	void play_again_callback(CCObject *pSender);
+	void setScore(int score);
     CREATE_FUNC(GameOverLayer);
+	//static GameOverLayer* create() ;
+	int m_score;
 };
 
 #endif // __GAMEOVERLAYER_H__

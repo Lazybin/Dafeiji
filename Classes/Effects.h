@@ -25,10 +25,10 @@ public:
     void preLoad();
     
     void enemy_boom( CCNode* target, CCPoint point );
-	void hero_boom( CCNode* target, CCPoint point );
+	void hero_boom( CCNode* target, CCPoint point ,int score);
 	void hit( CCNode* target, CCPoint point );
     
-    void boom_callback( CCNode* pNode );
+    void boom_callback( CCNode* pNode,int score );
     void hit_callback( CCNode* pNode );
 
 };

@@ -87,8 +87,11 @@ void GameLayer::update(float delta)
 		Enemy* enemy=(Enemy*)et;	
 		if(enemy->boundingBox().intersectsRect(this->mWarrior->m_warrrior->boundingBox())) 
 		{
-			//CCLOG("a");
-			Effects::sharedEffects()->hero_boom( this, this->mWarrior->m_warrrior->getPosition() );			
+			/*CCLOG("a:%d",this->scoreLayer->getScroe());
+			int p=this->scoreLayer->getScroe();
+			int *q=&p;
+			CCLOG("a:%d",*q);*/
+			Effects::sharedEffects()->hero_boom( this, this->mWarrior->m_warrrior->getPosition(),this->scoreLayer->getScroe() );			
 			return;
 		}
 	}

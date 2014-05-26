@@ -23,10 +23,10 @@ public:
 	void add_new_bullet(float t);
     CREATE_FUNC(GameLayer);
 	virtual void update(float delta);
+	CC_SYNTHESIZE(ScoreLayer*, scoreLayer, ScroeLayer);
 private:
 	WarriorLayer* mWarrior;
 	BulletManage* bullet;
-	ScoreLayer * scoreLayer;
 	DoubleLayer* mDoubleLayer;
 	int times;
 };

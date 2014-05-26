@@ -33,10 +33,7 @@ void  GameOverLayer::setupViews()
 	title->setAnchorPoint(ccp(0.5,1));
 	title->setPosition(ccp(getWinSize().width/2,getWinSize().height-60));
 	this->addChild(title);
-
-	CCLabelBMFont* fontOfScore=CCLabelBMFont::create("SCORE:40982","fonts/bitmapFontTest.fnt");
-	fontOfScore->setPosition(ccp(getWinSize().width/2,getWinSize().height/2+50));
-	this->addChild(fontOfScore);
+	
 
 	CCSprite *pPlayAgainNormal=CCSprite::create("menu.png",CCRectMake(378,0,126,33));
 	CCSprite *pPlayAgainPressed=CCSprite::create("menu.png",CCRectMake(378,33,126,33));
@@ -65,19 +62,27 @@ void GameOverLayer::back_callback(CCObject *pSender)
 	CCDirector::sharedDirector()->pushScene(CCTransitionFade::create(0.5f,WelcomeLayer::scene()));
 }
 //获取场景指针
-CCScene* GameOverLayer::scene()
+CCScene* GameOverLayer::scene(int score)
 {
 	CCScene* sc=NULL;
 	do
 	{
+		CCLOG("a:%d",score);
 		sc = CCScene::create();
 		CC_BREAK_IF(!sc);
 		GameOverLayer * layer=GameOverLayer::create();
-
+		layer->setScore(score);
 		CC_BREAK_IF(!layer);
 
 		sc->addChild(layer);
 	}
 	while(0);
 	return sc;
+}void GameOverLayer::setScore(int score)
+{
+	char strScore[100];
+	sprintf(strScore,"SCORE:%d",score);
+	CCLabelBMFont* fontOfScore=CCLabelBMFont::create(strScore,"fonts/bitmapFontTest.fnt");
+	fontOfScore->setPosition(ccp(getWinSize().width/2,getWinSize().height/2+50));
+	this->addChild(fontOfScore);
 }
